@@ -17,6 +17,12 @@ class AddNotePage extends StatefulWidget {
 class _AddNotePageState extends State<AddNotePage> {
   TextEditingController titleController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
+  @override
+  void dispose() {
+    super.dispose();
+    titleController.dispose();
+    descriptionController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,6 +40,13 @@ class _AddNotePageState extends State<AddNotePage> {
           listener: (context, state) {
             if (state is NoteAddedState) {
               context.go(NOTE_PAGE_ROUTE);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text('Note added successfully!'),
+                  duration: Duration(seconds: 3),
+                  showCloseIcon: true,
+                ),
+              );
             } else if (state is NoteErrorState) {
               ScaffoldMessenger.of(
                 context,
@@ -43,8 +56,7 @@ class _AddNotePageState extends State<AddNotePage> {
           builder: (context, state) {
             if (state is NoteLoadingState) {
               return Center(child: CircularProgressIndicator());
-            } 
-            else {
+            } else {
               return Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Column(
@@ -58,12 +70,23 @@ class _AddNotePageState extends State<AddNotePage> {
                       controller: descriptionController,
                     ),
                     SizedBox(height: 16),
-                    ElevatedButton(
+                    FilledButton(
                       onPressed: () {
-                        context.read<AddNoteCubit>().addNote(
-                          title: titleController.text,
-                          description: descriptionController.text,
-                        );
+                        if (titleController.text.isEmpty ||
+                            descriptionController.text.isEmpty) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                'Please fill in both title and description',
+                              ),
+                            ),
+                          );
+                        } else {
+                          context.read<AddNoteCubit>().addNote(
+                            title: titleController.text,
+                            description: descriptionController.text,
+                          );
+                        }
                       },
                       child: Text('Add Note'),
                     ),

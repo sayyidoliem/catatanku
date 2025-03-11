@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:note/domain/repositories/note_repositories.dart';
 
@@ -6,12 +7,16 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection('notes');
 
 class NoteRepositoriesImpl implements NoteRepositories {
-  static String? userUid;
+  static String? userUID = 'd0aNjeNVBKqWGK6oRul7';
+
+  Future<String?> _getUserUID() async {
+    return await UserStorage.getUserUID(); // Fetch the UID from SharedPreferences
+  }
 
   @override
   Future<void> addNote(String title, String description) async {
     DocumentReference documentReference =
-        _mainCollection.doc(userUid).collection('items').doc();
+        _mainCollection.doc(await _getUserUID()).collection('items').doc();
 
     Map<String, dynamic> data = {"title": title, "description": description};
 
@@ -24,7 +29,7 @@ class NoteRepositoriesImpl implements NoteRepositories {
   @override
   Future<void> deleteNote(String docId) async {
     DocumentReference documentReference = _mainCollection
-        .doc(userUid)
+        .doc(await _getUserUID())
         .collection('items')
         .doc(docId);
 
@@ -47,7 +52,7 @@ class NoteRepositoriesImpl implements NoteRepositories {
     String docId,
   ) async {
     DocumentReference documentReference = _mainCollection
-        .doc(userUid)
+        .doc(await _getUserUID())
         .collection('items')
         .doc(docId);
 
@@ -66,10 +71,15 @@ class NoteRepositoriesImpl implements NoteRepositories {
   }
 
   @override
-  Stream<QuerySnapshot> getNotes(String userUid) {
+  Stream<QuerySnapshot> getNotes() async* {
+    if (userUID == null) {
+      debugPrint('No user UID found!');
+      yield* Stream.empty();
+      return;
+    }
     CollectionReference noteItemCollection = _mainCollection
-        .doc(userUid)
+        .doc(await _getUserUID())
         .collection('items');
-    return noteItemCollection.snapshots();
+    yield* noteItemCollection.snapshots();
   }
 }

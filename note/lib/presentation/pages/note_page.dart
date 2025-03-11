@@ -11,11 +11,27 @@ class NotePage extends StatefulWidget {
 }
 
 class _NotePageState extends State<NotePage> {
+  Future<void> _addUserId() async {
+    return await UserStorage.saveUserUID(
+      'd0aNjeNVBKqWGK6oRul7',
+    ); // Fetch the UID from SharedPreferences
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Catatanku')),
-      body: ListNoteWidget(userUid: 'iSTKcXeOpBujNewTowlS'),
+      appBar: AppBar(
+        title: Text('Catatanku'),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _addUserId();
+            },
+            icon: Icon(Icons.abc),
+          ),
+        ],
+      ),
+      body: ListNoteWidget(),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           context.go(ADD_NOTE_PAGE_ROUTE);

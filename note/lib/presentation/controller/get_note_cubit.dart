@@ -7,9 +7,9 @@ class GetNoteCubit extends Cubit<NoteState> {
 
   final GetNotesUseCase getNotesUseCase;
 
- void fetchNotes(String userUid) {
+ void fetchNotes() {
     emit(NoteLoadingState());
-    getNotesUseCase.execute(userUid).listen((notes) {
+    getNotesUseCase.execute().listen((notes) {
       emit(NoteLoadedState(notes));
     });
   }
