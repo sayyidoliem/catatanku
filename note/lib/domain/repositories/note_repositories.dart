@@ -7,5 +7,5 @@ abstract class NoteRepositories {
 
   Future<void> deleteNote(String docId);
 
-  Stream<QuerySnapshot> getNotes(String userUid);
+  Stream<QuerySnapshot> getNotes();
 }

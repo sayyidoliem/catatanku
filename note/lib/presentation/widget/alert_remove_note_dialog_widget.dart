@@ -25,12 +25,15 @@ class AlertRemoveNoteDialogWidget extends StatelessWidget {
               },
               child: const Text('Discard'),
             ),
-            FilledButton(
-              onPressed: () {
-                context.read<DeleteNoteCubit>().deleteNote(docId: docId);
-              },
-              child: Text('Delete'),
-            ),
+            if (state is NoteLoadingState)
+              CircularProgressIndicator()
+            else
+              FilledButton(
+                onPressed: () {
+                  context.read<DeleteNoteCubit>().deleteNote(docId: docId);
+                },
+                child: Text('Delete'),
+              ),
           ],
         );
       },

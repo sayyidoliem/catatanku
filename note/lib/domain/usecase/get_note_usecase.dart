@@ -6,7 +6,7 @@ class GetNotesUseCase {
 
   GetNotesUseCase(this.repository);
 
-  Stream<QuerySnapshot> execute(String userUid) {
-    return repository.getNotes(userUid);
+  Stream<QuerySnapshot> execute() {
+    return repository.getNotes();
   }
 }
