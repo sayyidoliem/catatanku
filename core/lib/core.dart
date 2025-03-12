@@ -4,7 +4,5 @@ library core;
 export 'common/name_router.dart';
 
 //utils
+export 'utils/storage.dart';
 export 'utils/validator.dart';
-
-//presentation
-export 'presentation/pages/dashboard_page.dart';
