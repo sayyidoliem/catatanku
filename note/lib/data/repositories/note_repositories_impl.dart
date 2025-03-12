@@ -7,7 +7,6 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection('notes');
 
 class NoteRepositoriesImpl implements NoteRepositories {
-  // static String? userUID = 'd0aNjeNVBKqWGK6oRul7';
 
   Future<String?> _getUserUID() async {
     return await UserStorage.getUserUID(); // Fetch the UID from SharedPreferences
@@ -37,12 +36,6 @@ class NoteRepositoriesImpl implements NoteRepositories {
         .delete()
         .whenComplete(() => debugPrint('Note delete in Firebase'))
         .catchError((e) => debugPrint(e));
-
-    // DocumentReference documentReferencer = _firestore
-    //     .collection('notes')
-    //     .doc(userUid)
-    //     .collection('items')
-    //     .doc(docId);
   }
 
   @override
@@ -62,12 +55,6 @@ class NoteRepositoriesImpl implements NoteRepositories {
         .update(data)
         .whenComplete(() => debugPrint('Note updated in Firebase'))
         .catchError((e) => debugPrint(e));
-
-    // DocumentReference documentReferencer = _firestore
-    //     .collection('notes')
-    //     .doc(userUid)
-    //     .collection('items')
-    //     .doc(docId);
   }
 
   @override

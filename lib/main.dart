@@ -40,29 +40,22 @@ void main() async {
         BlocProvider(
           create:
               (context) =>
-                  RefreshUserCubit(RefreshUserUsecase(AuthRepositoriesImpl())),
-        ),
-        BlocProvider(
-          create:
-              (context) => RegisterEmailPasswordUserCubit(
-                RegisterEmailPasswordUserUsecase(AuthRepositoriesImpl()),
-              ),
-        ),
-        BlocProvider(
-          create:
-              (context) => SignInEmailPasswordUserCubit(
-                SignInEmailPasswordUserUsecase(AuthRepositoriesImpl()),
-              ),
-        ),
-        BlocProvider(
-          create:
-              (context) =>
                   GetNoteCubit(GetNotesUseCase(NoteRepositoriesImpl())),
         ),
         BlocProvider(
           create:
               (context) =>
                   DeleteNoteCubit(DeleteNoteUseCase(NoteRepositoriesImpl())),
+        ),
+        BlocProvider(
+          create:
+              (context) =>
+                  AddNoteCubit(AddNoteUseCase(NoteRepositoriesImpl())),
+        ),
+        BlocProvider(
+          create:
+              (context) =>
+                  UpdateNoteCubit(UpdateNoteUseCase(NoteRepositoriesImpl())),
         ),
       ],
       child: MainApp(),
@@ -74,54 +67,8 @@ class MainApp extends StatelessWidget {
   MainApp({super.key});
 
   final _router = GoRouter(
-    initialLocation: NOTE_PAGE_ROUTE,
+    initialLocation: SIGN_IN_PAGE_ROUTE,
     routes: <RouteBase>[
-      // GoRoute(
-      //   name: REGISTER_PAGE_ROUTE,
-      //   path: '/register',
-      //   builder: (context, state) {
-      //     return MultiBlocProvider(
-      //       providers: [
-      //         BlocProvider(
-      //           create:
-      //               (context) => RegisterEmailPasswordUserCubit(
-      //                 RegisterEmailPasswordUserUsecase(AuthRepositoriesImpl()),
-      //               ),
-      //         ),
-      //         BlocProvider(
-      //           create:
-      //               (context) => RefreshUserCubit(
-      //                 RefreshUserUsecase(AuthRepositoriesImpl()),
-      //               ),
-      //         ),
-      //       ],
-      //       child: RegisterPage(),
-      //     );
-      //   },
-      // ),
-      // GoRoute(
-      //   name: SIGN_IN_PAGE_ROUTE,
-      //   path: '/sign-in',
-      //   builder: (context, state) {
-      //     return MultiBlocProvider(
-      //       providers: [
-      //         BlocProvider(
-      //           create:
-      //               (context) => SignInEmailPasswordUserCubit(
-      //                 SignInEmailPasswordUserUsecase(AuthRepositoriesImpl()),
-      //               ),
-      //         ),
-      //         BlocProvider(
-      //           create:
-      //               (context) => RefreshUserCubit(
-      //                 RefreshUserUsecase(AuthRepositoriesImpl()),
-      //               ),
-      //         ),
-      //       ],
-      //       child: SignInPage(),
-      //     );
-      //   },
-      // ),
       GoRoute(
         path: SIGN_IN_PAGE_ROUTE,
         builder: (context, state) => SignInPage(),
