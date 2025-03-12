@@ -9,8 +9,10 @@ class DeleteNoteCubit extends Cubit<NoteState> {
 
   void deleteNote({required String docId}) async {
     emit(NoteLoadingState());
+    await Future.delayed(const Duration(seconds: 3));
     try {
       await deleteNoteUseCase.execute(docId: docId);
+      await Future.delayed(const Duration(seconds: 3));
       emit(NoteDeletedState());
     } catch (e) {
       emit(NoteErrorState(e.toString()));
