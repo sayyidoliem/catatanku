@@ -88,7 +88,6 @@ class _EditNotePageState extends State<EditNotePage> {
                     SizedBox(height: 16),
                     ElevatedButton(
                       onPressed: () {
-                        // Update the note with the current values
                         context.read<UpdateNoteCubit>().updateNote(
                           title: titleController.text,
                           description: descriptionController.text,

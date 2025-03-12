@@ -19,9 +19,9 @@ class _AddNotePageState extends State<AddNotePage> {
   TextEditingController descriptionController = TextEditingController();
   @override
   void dispose() {
-    super.dispose();
     titleController.dispose();
     descriptionController.dispose();
+    super.dispose();
   }
 
   @override
@@ -65,9 +65,14 @@ class _AddNotePageState extends State<AddNotePage> {
                       decoration: InputDecoration(hintText: 'Title'),
                       controller: titleController,
                     ),
-                    TextField(
-                      decoration: InputDecoration(hintText: 'Description'),
-                      controller: descriptionController,
+                    Expanded(
+                      child: TextField(
+                        decoration: InputDecoration(hintText: 'Description'),
+                        controller: descriptionController,
+                        expands: true,
+                        minLines: null, 
+                        maxLines: null,
+                      ),
                     ),
                     SizedBox(height: 16),
                     FilledButton(

@@ -3,13 +3,26 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note/presentation/controller/delete_note_cubit.dart';
 import 'package:note/presentation/controller/note_state.dart';
 
-class AlertRemoveNoteDialogWidget extends StatelessWidget {
+class AlertRemoveNoteDialogWidget extends StatefulWidget {
+  const AlertRemoveNoteDialogWidget({super.key, required this.docId});
+
   final String docId;
 
-  const AlertRemoveNoteDialogWidget({super.key, required this.docId});
+  @override
+  State<AlertRemoveNoteDialogWidget> createState() =>
+      _AlertRemoveNoteDialogWidgetState();
+}
+
+class _AlertRemoveNoteDialogWidgetState
+    extends State<AlertRemoveNoteDialogWidget> {
+  @override
+  void dispose() {
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
+    String docId = widget.docId;
     return BlocConsumer<DeleteNoteCubit, NoteState>(
       builder: (context, state) {
         return AlertDialog(
@@ -32,6 +45,9 @@ class AlertRemoveNoteDialogWidget extends StatelessWidget {
                 onPressed: () {
                   context.read<DeleteNoteCubit>().deleteNote(docId: docId);
                 },
+                style: ButtonStyle(
+                  backgroundColor: WidgetStateProperty.all(Colors.red),
+                ),
                 child: Text('Delete'),
               ),
           ],

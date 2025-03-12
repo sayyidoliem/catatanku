@@ -13,12 +13,14 @@ class UpdateNoteCubit extends Cubit<NoteState> {
     required String docId,
   }) async {
     emit(NoteLoadingState());
+    await Future.delayed(const Duration(seconds: 3));
     try {
       await updateNoteUseCase.execute(
         title: title,
         description: description,
         docId: docId,
       );
+      await Future.delayed(const Duration(seconds: 3));
       emit(NoteDeletedState());
     } catch (e) {
       emit(NoteErrorState(e.toString()));

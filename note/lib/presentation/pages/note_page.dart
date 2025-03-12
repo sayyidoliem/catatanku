@@ -11,11 +11,6 @@ class NotePage extends StatefulWidget {
 }
 
 class _NotePageState extends State<NotePage> {
-  Future<void> _addUserId() async {
-    return await UserStorage.saveUserUID(
-      'd0aNjeNVBKqWGK6oRul7',
-    ); // Fetch the UID from SharedPreferences
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,9 +20,9 @@ class _NotePageState extends State<NotePage> {
         actions: [
           IconButton(
             onPressed: () {
-              _addUserId();
+              context.go(PROFILE_PAGE_ROUTE);
             },
-            icon: Icon(Icons.abc),
+            icon: Icon(Icons.person_rounded),
           ),
         ],
       ),

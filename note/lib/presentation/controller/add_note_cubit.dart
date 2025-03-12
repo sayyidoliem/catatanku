@@ -7,16 +7,12 @@ class AddNoteCubit extends Cubit<NoteState> {
 
   final AddNoteUseCase addNoteUseCase;
 
-  void addNote({
-    required String title,
-    required String description,
-  }) async {
+  void addNote({required String title, required String description}) async {
     emit(NoteLoadingState());
+    await Future.delayed(const Duration(seconds: 3));
     try {
-      await addNoteUseCase.execute(
-        title: title,
-        description: description,
-      );
+      await addNoteUseCase.execute(title: title, description: description);
+      await Future.delayed(const Duration(seconds: 3));
       emit(NoteAddedState());
     } catch (e) {
       emit(NoteErrorState(e.toString()));

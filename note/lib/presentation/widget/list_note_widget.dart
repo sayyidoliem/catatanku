@@ -5,19 +5,23 @@ import 'package:go_router/go_router.dart';
 import 'package:note/presentation/controller/get_note_cubit.dart';
 import 'package:note/presentation/controller/note_state.dart';
 import 'package:note/presentation/widget/alert_remove_note_dialog_widget.dart';
+import 'package:slideable/slideable.dart';
 
-class ListNoteWidget extends StatelessWidget {
+class ListNoteWidget extends StatefulWidget {
   const ListNoteWidget({super.key});
 
+  @override
+  State<ListNoteWidget> createState() => _ListNoteWidgetState();
+}
+
+class _ListNoteWidgetState extends State<ListNoteWidget> {
   Future<void> _refreshNotes(BuildContext context) async {
-    // Call the Cubit to fetch the notes again
     context.read<GetNoteCubit>().fetchNotes();
   }
 
   @override
   Widget build(BuildContext context) {
     context.read<GetNoteCubit>().fetchNotes();
-
     return BlocBuilder<GetNoteCubit, NoteState>(
       builder: (context, state) {
         if (state is NoteLoadingState) {
@@ -26,7 +30,7 @@ class ListNoteWidget extends StatelessWidget {
           return RefreshIndicator(
             onRefresh: () => _refreshNotes(context), // Trigger the refresh
             child: ListView.separated(
-              separatorBuilder: (context, index) => SizedBox(height: 16.0),
+              separatorBuilder: (context, index) => Divider(),
               itemCount: state.notes.docs.length,
               itemBuilder: (context, index) {
                 var noteInfo =
@@ -34,29 +38,11 @@ class ListNoteWidget extends StatelessWidget {
                 String docID = state.notes.docs[index].id;
                 String title = noteInfo['title'];
                 String description = noteInfo['description'];
-
-                return Ink(
-                  decoration: BoxDecoration(
-                    // color: CustomColors.firebaseGrey.withOpacity(0.1),
-                    borderRadius: BorderRadius.circular(8.0),
-                  ),
-                  child: ListTile(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    title: Text(
-                      title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    subtitle: Text(
-                      description,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                    trailing: IconButton(
-                      onPressed: () {
-                        // Show the dialog and pass the docID to it
+                return Slideable(
+                  items: [
+                    ActionItems(
+                      icon: const Icon(Icons.delete),
+                      onPress: () {
                         showDialog(
                           context: context,
                           builder:
@@ -64,17 +50,35 @@ class ListNoteWidget extends StatelessWidget {
                                   AlertRemoveNoteDialogWidget(docId: docID),
                         );
                       },
-                      icon: Icon(Icons.delete),
+                      backgroudColor: Colors.transparent,
                     ),
-                    onTap:
-                        () => context.go(
-                          EDIT_NOTE_PAGE_ROUTE,
-                          extra: {
-                            'title': title,
-                            'description': description,
-                            'docID': docID,
-                          },
-                        ),
+                  ],
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: ListTile(
+                      title: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      subtitle: Text(
+                        description,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap:
+                          () => context.go(
+                            EDIT_NOTE_PAGE_ROUTE,
+                            extra: {
+                              'title': title,
+                              'description': description,
+                              'docID': docID,
+                            },
+                          ),
+                    ),
                   ),
                 );
               },

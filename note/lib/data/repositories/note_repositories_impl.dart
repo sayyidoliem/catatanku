@@ -7,7 +7,7 @@ final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 final CollectionReference _mainCollection = _firestore.collection('notes');
 
 class NoteRepositoriesImpl implements NoteRepositories {
-  static String? userUID = 'd0aNjeNVBKqWGK6oRul7';
+  // static String? userUID = 'd0aNjeNVBKqWGK6oRul7';
 
   Future<String?> _getUserUID() async {
     return await UserStorage.getUserUID(); // Fetch the UID from SharedPreferences
@@ -72,7 +72,7 @@ class NoteRepositoriesImpl implements NoteRepositories {
 
   @override
   Stream<QuerySnapshot> getNotes() async* {
-    if (userUID == null) {
+    if (await _getUserUID() == null) {
       debugPrint('No user UID found!');
       yield* Stream.empty();
       return;
