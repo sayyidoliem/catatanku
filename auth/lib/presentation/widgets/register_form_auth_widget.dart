@@ -30,9 +30,7 @@ class RegisterFormAuthWidget extends StatelessWidget {
         if (state is AuthAuthenticatedState) {
           // Handle successful registration, navigate to another screen if necessary.
         } else if (state is AuthErrorState) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(state.message)),
-          );
+          context.showSnackBar(state.message, false);
         }
       },
       builder: (context, state) {

@@ -1,3 +1,4 @@
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:note/presentation/controller/delete_note_cubit.dart';
@@ -56,13 +57,9 @@ class _AlertRemoveNoteDialogWidgetState
       listener: (context, state) {
         if (state is NoteDeletedState) {
           Navigator.of(context).pop();
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Note deleted successfully!')),
-          );
+          context.showSnackBar('Note deleted successfully!', true);
         } else if (state is NoteErrorState) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text('Error: ${state.message}')));
+          context.showSnackBar('Error: ${state.message}', false);
         }
       },
     );

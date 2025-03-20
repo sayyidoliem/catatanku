@@ -1,4 +1,4 @@
-import 'package:core/common/name_router.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -64,9 +64,7 @@ class _EditNotePageState extends State<EditNotePage> {
             if (state is NoteUpdatedState) {
               context.go(NOTE_PAGE_ROUTE);
             } else if (state is NoteErrorState) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
+              context.showSnackBar(state.message, false);
             }
           },
           builder: (context, state) {

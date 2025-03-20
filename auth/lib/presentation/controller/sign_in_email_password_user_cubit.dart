@@ -1,5 +1,6 @@
 import 'package:auth/domain/usecases/sign_in_email_password_user_usecase.dart';
 import 'package:auth/presentation/controller/auth_state.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -28,9 +29,7 @@ class SignInEmailPasswordUserCubit extends Cubit<AuthState> {
       }
     } catch (e) {
       emit(AuthErrorState(e.toString()));
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Failed to sign in: $e")));
+      context.showSnackBar("Failed to sign in: $e", false);
     }
   }
 }

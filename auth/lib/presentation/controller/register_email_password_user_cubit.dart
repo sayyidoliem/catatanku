@@ -1,5 +1,6 @@
 import 'package:auth/domain/usecases/register_email_password_user_usecase.dart';
 import 'package:auth/presentation/controller/auth_state.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -30,9 +31,7 @@ class RegisterEmailPasswordUserCubit extends Cubit<AuthState> {
       }
     } catch (e) {
       emit(AuthErrorState(e.toString()));
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Failed to register: $e")));
+      context.showSnackBar("Failed to register: $e", false);
     }
   }
 }

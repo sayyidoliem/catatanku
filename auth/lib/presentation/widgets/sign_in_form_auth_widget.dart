@@ -28,9 +28,7 @@ class SignInFormAuthWidget extends StatelessWidget {
           // Handle successful authentication
           // Navigate to another screen or show success message.
         } else if (state is AuthErrorState) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          context.showSnackBar(state.message, false);
         }
       },
       builder: (context, state) {
