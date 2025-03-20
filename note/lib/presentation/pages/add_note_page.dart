@@ -1,4 +1,4 @@
-import 'package:core/common/name_router.dart';
+import 'package:core/core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
@@ -40,17 +40,9 @@ class _AddNotePageState extends State<AddNotePage> {
           listener: (context, state) {
             if (state is NoteAddedState) {
               context.go(NOTE_PAGE_ROUTE);
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text('Note added successfully!'),
-                  duration: Duration(seconds: 3),
-                  showCloseIcon: true,
-                ),
-              );
+              context.showSnackBar('Note added successfully!', true);
             } else if (state is NoteErrorState) {
-              ScaffoldMessenger.of(
-                context,
-              ).showSnackBar(SnackBar(content: Text(state.message)));
+              context.showSnackBar(state.message, false);
             }
           },
           builder: (context, state) {
@@ -70,7 +62,7 @@ class _AddNotePageState extends State<AddNotePage> {
                         decoration: InputDecoration(hintText: 'Description'),
                         controller: descriptionController,
                         expands: true,
-                        minLines: null, 
+                        minLines: null,
                         maxLines: null,
                       ),
                     ),
@@ -79,12 +71,9 @@ class _AddNotePageState extends State<AddNotePage> {
                       onPressed: () {
                         if (titleController.text.isEmpty ||
                             descriptionController.text.isEmpty) {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                'Please fill in both title and description',
-                              ),
-                            ),
+                          context.showSnackBar(
+                            'Please fill in both title and description',
+                            false,
                           );
                         } else {
                           context.read<AddNoteCubit>().addNote(

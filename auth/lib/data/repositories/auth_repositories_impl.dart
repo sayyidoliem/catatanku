@@ -1,5 +1,6 @@
 import 'package:auth/domain/repositories/auth_repositories.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:core/core.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -49,11 +50,9 @@ class AuthRepositoriesImpl implements AuthRepositories {
         errorMessage = e.message ?? 'An unexpected error occurred.';
       }
       debugPrint(errorMessage);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
+      context.showSnackBar(errorMessage, false);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('An error occurred: $e')));
+      context.showSnackBar('An error occurred: $e', false);
     }
 
     return user;
@@ -85,18 +84,17 @@ class AuthRepositoriesImpl implements AuthRepositories {
     } on FirebaseAuthException catch (e) {
       String errorMessage = '';
       if (e.code == 'user-not-found') {
-        errorMessage = 'No user found for that email. Please create an account.';
+        errorMessage =
+            'No user found for that email. Please create an account.';
       } else if (e.code == 'wrong-password') {
         errorMessage = 'Wrong password provided.';
       } else {
         errorMessage = e.message ?? 'An unexpected error occurred.';
       }
       debugPrint(errorMessage);
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(errorMessage)),
-      );
+      context.showSnackBar(errorMessage, false);
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('An error occurred: $e')));
+      context.showSnackBar('An error occurred: $e', false);
     }
 
     return user;
@@ -121,14 +119,17 @@ class AuthRepositoriesImpl implements AuthRepositories {
     // If UID doesn't exist, create the document in Firestore
     if (!userExists) {
       try {
-        await userDoc.set({
-          'uid': currentUserUID,
-          'createdAt': FieldValue.serverTimestamp(),
-        }).then((_) {
-          debugPrint("User UID created and stored in Firestore.");
-        }).catchError((e) {
-          debugPrint("Failed to create user UID in Firestore: $e");
-        });
+        await userDoc
+            .set({
+              'uid': currentUserUID,
+              'createdAt': FieldValue.serverTimestamp(),
+            })
+            .then((_) {
+              debugPrint("User UID created and stored in Firestore.");
+            })
+            .catchError((e) {
+              debugPrint("Failed to create user UID in Firestore: $e");
+            });
       } catch (e) {
         debugPrint("Error creating User UID: $e");
       }
